@@ -24,6 +24,8 @@ class TrainingPipelineConfig:
         # Full path where artifacts will be stored for this run
         self.artifact_dir = os.path.join(self.artifact_name, timestamp)
 
+        self.model_dir = os.path.join("final_model")
+
         # Store timestamp string for later use (e.g., versioning)
         self.timestamp: str = timestamp  
         
