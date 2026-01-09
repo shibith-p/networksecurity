@@ -76,10 +76,16 @@ jobs:
         - name: Pull latest images
           run: |
             docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
-            
-        - name: Stop and remove  container if running
+
+        - name: Stop and remove container if running
           run: |
-            docker ps -q --filter "name=networksecurity" | grep -q . && docker stop networksecurity && docker rm -fv networksecurity
+            if [ $(docker ps -aq -f name=networksecurity) ]; then
+                echo "Container found. Stopping and removing..."
+                docker stop networksecurity
+                docker rm -fv networksecurity
+            else
+                echo "No existing container named networksecurity found. Skipping."
+            fi
 
         - name: Run Docker Image to serve users
           run: |
